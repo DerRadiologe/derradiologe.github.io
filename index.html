@@ -185,6 +185,12 @@
 
         const targetDateValue = document.getElementById("targetDatetime").value;
         if (targetDateValue) {
+    const targetDate = new Date(targetDateValue);
+        if (targetDate < measurementDate) {
+        alert("Das gewählte Datum für die Restaktivität liegt vor dem Messdatum. Bitte geben Sie ein korrektes Datum ein.");
+        return;
+    }
+        if (targetDateValue) {
             const targetDate = new Date(targetDateValue);
             const elapsedHoursToDesired = (targetDate - measurementDate) / 1000 / 60 / 60;
             const remainingActivity = initialActivity * Math.pow(0.5, elapsedHoursToDesired / halfLife);
