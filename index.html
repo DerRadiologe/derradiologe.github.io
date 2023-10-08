@@ -2,40 +2,47 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Restaktivitätsrechner</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #e9ecef;
+            overflow-x: hidden;  /* verhindert horizontales Scrollen */
         }
         .container {
-            max-width: 600px;
+            max-width: 700px;
             margin: 50px auto;
-            padding: 20px;
+            padding: 30px;
             background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            word-wrap: break-word;  /* stellt sicher, dass der Text umbricht und nicht aus dem Frame geht */
         }
         h1, h2, h3 {
-            color: #333;
+            margin-bottom: 20px;
         }
-        label, p {
-            margin-bottom: 10px;
+        label {
+            display: block;
+            margin-bottom: 5px;
         }
-        input, select, button {
+        input, select {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ced4da;
             border-radius: 4px;
             font-size: 16px;
+            box-sizing: border-box;
         }
         button {
             background-color: #007BFF;
             color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
@@ -56,7 +63,7 @@
             <option value="6">Tc-99m - 6 Stunden</option>
             <option value="192">I-131 - 8 Tage</option>
             <option value="1.83">F-18 - 109.8 Minuten</option>
-            <option value="73">Tl-201 - 73 Stunden</option>
+            <option value="271">Ge-68 - 271 Tage</option>
         </select>
 
         <label for="datetime">Datum und Uhrzeit der ursprünglichen Messung:</label>
@@ -74,7 +81,7 @@
         <p>Halbwertszeit von Tc-99m: 6 Stunden</p>
         <p>Halbwertszeit von I-131: 8 Tage</p>
         <p>Halbwertszeit von F-18: 109.8 Minuten</p>
-        <p>Halbwertszeit von Tl-201: 73 Stunden</p>
+        <p>Halbwertszeit von Ge-68: 271 Tage</p>
     </div>
 
     <script>
