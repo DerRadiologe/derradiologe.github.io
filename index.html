@@ -106,11 +106,11 @@
         <label for="inputOption">Bitte wählen Sie eine Eingabeoption:</label>
 <select id="inputOption" onchange="toggleInputOption()">
     <option value="activity">Gewünschtes Aktivitätsniveau (in MBq)</option>
-    <option value="datetime">Restaktivität an Wunschdatum</option>
+    <option value="datetime">Restaktivität an Datum</option>
 </select>
 
 <div id="datetimeInput" style="display: none;">
-    <label for="targetDatetime">Wunschdatum und Uhrzeit:</label>
+    <label for="targetDatetime">Datum und Uhrzeit:</label>
     <input type="datetime-local" id="targetDatetime" name="targetDatetime">
 </div>
 
@@ -191,7 +191,7 @@
 
             const desiredTile = document.getElementById("desiredTile");
             desiredTile.innerHTML = `<p>Restaktivität zu Datum: ${formatNumber(remainingActivity)} MBq</p>
-                <p>Verstrichene Halbwertszeiten : ${formatNumber(elapsedHoursToDesired / halfLife)}</p>`;
+                <p>Verstrichene Halbwertszeiten zu Datum: ${formatNumber(elapsedHoursToDesired / halfLife)}</p>`;
         }
 
         const desiredActivity = parseFloat(document.getElementById("desiredActivity").value);
@@ -200,7 +200,7 @@
             const dateTimeToDesired = new Date(measurementDate.getTime() + timeToDesired * 60 * 60 * 1000);
             const desiredTile = document.getElementById("desiredTile");
             desiredTile.innerHTML += `<p>Zeit bis zum gewünschten Aktivitätsniveau (ab Messung): ${formatNumber(timeToDesired)} Stunden</p>
-                <p>Datum und Uhrzeit bis zum gewünschten Aktivitätsniveau: ${dateTimeToDesired.toLocaleString()}</p>`;
+                <p>Datum und Uhrzeit (gewünschtes Aktivitätsniveau): ${dateTimeToDesired.toLocaleString()}</p>`;
         }
     }
 
