@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -10,8 +11,9 @@
             margin: 0;
             padding: 0;
             background-color: #e9ecef;
-            overflow-x: hidden;  /* verhindert horizontales Scrollen */
+            overflow-x: hidden;
         }
+
         .container {
             max-width: 700px;
             margin: 50px auto;
@@ -19,16 +21,20 @@
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            word-wrap: break-word;  /* stellt sicher, dass der Text umbricht und nicht aus dem Frame geht */
+            word-wrap: break-word;
         }
+
         h1, h2, h3 {
             margin-bottom: 20px;
         }
+
         label {
             display: block;
             margin-bottom: 5px;
         }
-        input, select {
+
+        input,
+        select {
             width: 100%;
             padding: 10px 15px;
             margin-bottom: 20px;
@@ -37,6 +43,7 @@
             font-size: 16px;
             box-sizing: border-box;
         }
+
         button {
             background-color: #007BFF;
             color: #fff;
@@ -46,27 +53,40 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
+
         button:hover {
             background-color: #0056b3;
         }
-        /* Stile für die Kacheln */
+
         .tile {
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
         }
-        .tile-content {
-            border-top: 1px solid #e0e0e0;
-            padding-top: 10px;
-            margin-top: 10px;
-        }
-        .tile-content strong {
+
+        .tile-title {
             font-weight: bold;
+            margin-bottom: 10px;
         }
+
+        .current-tile {
+            background-color: #d1ecf1;
+        }
+
+        .desired-tile {
+            background-color: #d4edda;
+        }
+
+        .tile p {
+            margin: 0;
+            font-size: 18px;
+        }
+
     </style>
 </head>
+
 <body>
-    <div class="container">
+     <div class="container">
         <h1>Restaktivität</h1>
 
         <label for="activity">Ursprüngliche Aktivität (in MBq):</label>
@@ -84,32 +104,41 @@
         <input type="datetime-local" id="datetime" name="datetime" required>
 
         <label for="inputOption">Bitte wählen Sie eine Eingabeoption:</label>
-        <select id="inputOption" onchange="toggleInputOption()">
-            <option value="activity">Gewünschtes Aktivitätsniveau (in MBq)</option>
-            <option value="datetime">Restaktivität an Wunschdatum</option>
-        </select>
+<select id="inputOption" onchange="toggleInputOption()">
+    <option value="activity">Gewünschtes Aktivitätsniveau (in MBq)</option>
+    <option value="datetime">Restaktivität an Wunschdatum</option>
+</select>
 
-        <div id="datetimeInput" style="display: none;">
-            <label for="targetDatetime">Wunschdatum und Uhrzeit:</label>
-            <input type="datetime-local" id="targetDatetime" name="targetDatetime">
-        </div>
+<div id="datetimeInput" style="display: none;">
+    <label for="targetDatetime">Wunschdatum und Uhrzeit:</label>
+    <input type="datetime-local" id="targetDatetime" name="targetDatetime">
+</div>
 
-        <div id="activityInput">
-            <label for="desiredActivity">Gewünschtes Aktivitätsniveau (in MBq):</label>
-            <input type="number" id="desiredActivity" name="desiredActivity">
-        </div>
+<div id="activityInput">
+    <label for="desiredActivity">Gewünschtes Aktivitätsniveau (in MBq):</label>
+    <input type="number" id="desiredActivity" name="desiredActivity">
+</div>
+
 
         <button onclick="calculate()">Berechnen</button>
 
-        <h2>Ergebnisse:</h2>
-        <div id="currentTile" class="tile"></div>
-        <div id="desiredTile" class="tile"></div>
+        <h2>Ergebnis:</h2>
+        <div class="tile current-tile">
+            <div class="tile-title">Aktueller Stand</div>
+            <div id="currentTile"></div>
+        </div>
+        <div class="tile desired-tile">
+            <div class="tile-title">Wunschstand</div>
+            <div id="desiredTile"></div>
+        </div>
 
         <h3>Informationen:</h3>
         <p>Halbwertszeit von Tc-99m: 6 Stunden</p>
         <p>Halbwertszeit von I-131: 8 Tage</p>
         <p>Halbwertszeit von F-18: 109.8 Minuten</p>
         <p>Halbwertszeit von Ge-68: 271 Tage</p>
+        <h3>Haftungsausschluss</h3>
+        <p>Die Nutzung dieser Webseite zur Berechnung der Restaktivität von Radioaktiven Isotopen erfolgt auf eigene Gefahr. Die bereitgestellten Informationen dienen lediglich zu Informationszwecken und können ungenau oder veraltet sein. Es wird keine Gewähr für die Richtigkeit, Vollständigkeit oder Aktualität der bereitgestellten Daten übernommen. Die Betreiber dieser Webseite übernehmen keine Haftung für Schäden, Verluste oder Verletzungen, die sich aus der Nutzung der bereitgestellten Informationen ergeben. Es obliegt dem Nutzer, sicherzustellen, dass die berechneten Ergebnisse seinen Anforderungen entsprechen und den geltenden gesetzlichen Bestimmungen und Sicherheitsvorschriften entsprechen. Die Nutzung dieser Webseite stellt keine professionelle Beratung oder Empfehlung dar, und es wird dringend empfohlen, sich bei Fragen zur Radioaktivität und strahlungsbezogenen Themen an qualifizierte Fachleute zu wenden. Durch die Nutzung dieser Webseite erklärt sich der Nutzer damit einverstanden, dass er sämtliche Risiken und Verantwortung für die Nutzung der bereitgestellten Informationen übernimmt und auf jegliche Ansprüche gegen die Betreiber verzichtet.</p>
     </div>
 
     <script>
@@ -148,13 +177,8 @@
         const currentElapsedHours = (new Date() - measurementDate) / 1000 / 60 / 60;
         const currentActivity = initialActivity * Math.pow(0.5, currentElapsedHours / halfLife);
         const currentTile = document.getElementById("currentTile");
-        currentTile.innerHTML = `
-            <div class="tile-content">
-                <p><strong>Aktuelle Restaktivität:</strong> ${formatNumber(currentActivity)} MBq</p>
-            </div>
-            <div class="tile-content">
-                <p><strong>Verstrichene Halbwertszeiten bis zum aktuellen Zeitpunkt:</strong> ${formatNumber(currentElapsedHours / halfLife)}</p>
-            </div>`;
+        currentTile.innerHTML = `<p>Aktuelle Restaktivität: ${formatNumber(currentActivity)} MBq</p>
+            <p>Verstrichene Halbwertszeiten bis zum aktuellen Zeitpunkt: ${formatNumber(currentElapsedHours / halfLife)}</p>`;
 
         const targetDateValue = document.getElementById("targetDatetime").value;
         if (targetDateValue) {
@@ -163,13 +187,8 @@
             const remainingActivity = initialActivity * Math.pow(0.5, elapsedHoursToDesired / halfLife);
 
             const desiredTile = document.getElementById("desiredTile");
-            desiredTile.innerHTML = `
-                <div class="tile-content">
-                    <p><strong>Restaktivität zum gewünschten Zeitpunkt:</strong> ${formatNumber(remainingActivity)} MBq</p>
-                </div>
-                <div class="tile-content">
-                    <p><strong>Verstrichene Halbwertszeiten zum Wunschdatum:</strong> ${formatNumber(elapsedHoursToDesired / halfLife)}</p>
-                </div>`;
+            desiredTile.innerHTML = `<p>Restaktivität zum gewünschten Zeitpunkt: ${formatNumber(remainingActivity)} MBq</p>
+                <p>Verstrichene Halbwertszeiten zum Wunschdatum: ${formatNumber(elapsedHoursToDesired / halfLife)}</p>`;
         }
 
         const desiredActivity = parseFloat(document.getElementById("desiredActivity").value);
@@ -177,13 +196,8 @@
             const timeToDesired = halfLife * Math.log(initialActivity / desiredActivity) / Math.log(2);
             const dateTimeToDesired = new Date(measurementDate.getTime() + timeToDesired * 60 * 60 * 1000);
             const desiredTile = document.getElementById("desiredTile");
-            desiredTile.innerHTML += `
-                <div class="tile-content">
-                    <p><strong>Zeit bis zum gewünschten Aktivitätsniveau:</strong> ${formatNumber(timeToDesired)} Stunden</p>
-                </div>
-                <div class="tile-content">
-                    <p><strong>Datum und Uhrzeit bis zum gewünschten Aktivitätsniveau:</strong> ${dateTimeToDesired.toLocaleString()}</p>
-                </div>`;
+            desiredTile.innerHTML += `<p>Zeit bis zum gewünschten Aktivitätsniveau: ${formatNumber(timeToDesired)} Stunden</p>
+                <p>Datum und Uhrzeit bis zum gewünschten Aktivitätsniveau: ${dateTimeToDesired.toLocaleString()}</p>`;
         }
     }
 
@@ -205,7 +219,6 @@
         document.getElementById("desiredTile").innerHTML = "";
     }
 </script>
-
 
 </body>
 
