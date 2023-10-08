@@ -142,6 +142,10 @@
     </div>
 
     <script>
+    function formatNumber(number) {
+        return number.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: false });
+    }
+
     function calculate() {
         // Ergebnisse zurücksetzen
         resetResults();
@@ -173,8 +177,8 @@
         const currentElapsedHours = (new Date() - measurementDate) / 1000 / 60 / 60;
         const currentActivity = initialActivity * Math.pow(0.5, currentElapsedHours / halfLife);
         const currentTile = document.getElementById("currentTile");
-        currentTile.innerHTML = `<p>Aktuelle Restaktivität: ${currentActivity.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MBq</p>
-            <p>Verstrichene Halbwertszeiten bis zum aktuellen Zeitpunkt: ${(currentElapsedHours / halfLife).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>`;
+        currentTile.innerHTML = `<p>Aktuelle Restaktivität: ${formatNumber(currentActivity)} MBq</p>
+            <p>Verstrichene Halbwertszeiten bis zum aktuellen Zeitpunkt: ${formatNumber(currentElapsedHours / halfLife)}</p>`;
 
         const targetDateValue = document.getElementById("targetDatetime").value;
         if (targetDateValue) {
@@ -183,8 +187,8 @@
             const remainingActivity = initialActivity * Math.pow(0.5, elapsedHoursToDesired / halfLife);
 
             const desiredTile = document.getElementById("desiredTile");
-            desiredTile.innerHTML = `<p>Restaktivität zum gewünschten Zeitpunkt: ${remainingActivity.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MBq</p>
-                <p>Verstrichene Halbwertszeiten zum Wunschdatum: ${(elapsedHoursToDesired / halfLife).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>`;
+            desiredTile.innerHTML = `<p>Restaktivität zum gewünschten Zeitpunkt: ${formatNumber(remainingActivity)} MBq</p>
+                <p>Verstrichene Halbwertszeiten zum Wunschdatum: ${formatNumber(elapsedHoursToDesired / halfLife)}</p>`;
         }
 
         const desiredActivity = parseFloat(document.getElementById("desiredActivity").value);
@@ -192,7 +196,7 @@
             const timeToDesired = halfLife * Math.log(initialActivity / desiredActivity) / Math.log(2);
             const dateTimeToDesired = new Date(measurementDate.getTime() + timeToDesired * 60 * 60 * 1000);
             const desiredTile = document.getElementById("desiredTile");
-            desiredTile.innerHTML += `<p>Zeit bis zum gewünschten Aktivitätsniveau: ${timeToDesired.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Stunden</p>
+            desiredTile.innerHTML += `<p>Zeit bis zum gewünschten Aktivitätsniveau: ${formatNumber(timeToDesired)} Stunden</p>
                 <p>Datum und Uhrzeit bis zum gewünschten Aktivitätsniveau: ${dateTimeToDesired.toLocaleString()}</p>`;
         }
     }
