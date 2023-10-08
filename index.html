@@ -143,15 +143,21 @@
 
     <script>
     function calculate() {
-        // Ergebnisse zurücksetzen
-        resetResults();
+    // Ergebnisse zurücksetzen
+    resetResults();
 
-        const measurementDateValue = document.getElementById("datetime").value;
-        if (!measurementDateValue) {
-            alert("Bitte geben Sie das Datum und die Uhrzeit der ursprünglichen Messung ein.");
-            return;
-        }
-        const measurementDate = new Date(measurementDateValue);
+    const measurementDateValue = document.getElementById("datetime").value;
+    if (!measurementDateValue) {
+        alert("Bitte geben Sie das Datum und die Uhrzeit der ursprünglichen Messung ein.");
+        return;
+    }
+    const measurementDate = new Date(measurementDateValue);
+    const now = new Date();
+
+    if (measurementDate > now) {
+        alert("Das Datum der ursprünglichen Messung liegt in der Zukunft. Bitte geben Sie ein korrektes Datum ein.");
+        return;
+    }
 
         const initialActivity = parseFloat(document.getElementById("activity").value);
 
