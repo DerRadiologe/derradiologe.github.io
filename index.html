@@ -187,7 +187,7 @@ function calculate() {
     if (targetDateValue) {
         const targetDate = new Date(targetDateValue);
         if (targetDate < measurementDate) {
-            alert("Das gewählte Datum für die Restaktivität liegt vor dem Messdatum. Bitte geben Sie ein korrektes Datum ein.");
+            alert("Das gewählte Zeitpunkt liegt vor dem Messdatum. Bitte geben Sie ein korrektes Datum ein.");
             return;
         }
         const elapsedHoursToDesired = (targetDate - measurementDate) / 1000 / 60 / 60;
