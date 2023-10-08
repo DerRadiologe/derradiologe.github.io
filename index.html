@@ -117,7 +117,7 @@
     // Calculate time to desired activity level
     const desiredActivity = parseFloat(document.getElementById("desiredActivity").value);
     if (desiredActivity && desiredActivity < initialActivity) {
-        const timeToDesired = -halfLife * Math.log2(desiredActivity / initialActivity);
+        const timeToDesired = halfLife * Math.log2(initialActivity / desiredActivity);
         document.getElementById("timeToDesiredActivity").innerText = `Zeit bis zum gewünschten Aktivitätsniveau: ${timeToDesired.toFixed(2)} Stunden`;
     }
 
