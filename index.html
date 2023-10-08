@@ -143,21 +143,21 @@
 
     <script>
     function calculate() {
-    // Ergebnisse zurücksetzen
-    resetResults();
+        // Ergebnisse zurücksetzen
+        resetResults();
 
-    const measurementDateValue = document.getElementById("datetime").value;
-    if (!measurementDateValue) {
-        alert("Bitte geben Sie das Datum und die Uhrzeit der ursprünglichen Messung ein.");
-        return;
-    }
-    const measurementDate = new Date(measurementDateValue);
-    const now = new Date();
+        const measurementDateValue = document.getElementById("datetime").value;
+        if (!measurementDateValue) {
+            alert("Bitte geben Sie das Datum und die Uhrzeit der ursprünglichen Messung ein.");
+            return;
+        }
+        const measurementDate = new Date(measurementDateValue);
+        const now = new Date();
 
-    if (measurementDate > now) {
-        alert("Das Datum der ursprünglichen Messung liegt in der Zukunft. Bitte geben Sie ein korrektes Datum ein.");
-        return;
-    }
+        if (measurementDate > now) {
+            alert("Das Datum der ursprünglichen Messung liegt in der Zukunft. Bitte geben Sie ein korrektes Datum ein.");
+            return;
+        }
 
         const initialActivity = parseFloat(document.getElementById("activity").value);
 
@@ -173,8 +173,8 @@
         const currentElapsedHours = (new Date() - measurementDate) / 1000 / 60 / 60;
         const currentActivity = initialActivity * Math.pow(0.5, currentElapsedHours / halfLife);
         const currentTile = document.getElementById("currentTile");
-        currentTile.innerHTML = `<p>Aktuelle Restaktivität: ${currentActivity.toFixed(2)} MBq</p>
-            <p>Verstrichene Halbwertszeiten bis zum aktuellen Zeitpunkt: ${(currentElapsedHours / halfLife).toFixed(2)}</p>`;
+        currentTile.innerHTML = `<p>Aktuelle Restaktivität: ${currentActivity.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MBq</p>
+            <p>Verstrichene Halbwertszeiten bis zum aktuellen Zeitpunkt: ${(currentElapsedHours / halfLife).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>`;
 
         const targetDateValue = document.getElementById("targetDatetime").value;
         if (targetDateValue) {
@@ -183,8 +183,8 @@
             const remainingActivity = initialActivity * Math.pow(0.5, elapsedHoursToDesired / halfLife);
 
             const desiredTile = document.getElementById("desiredTile");
-            desiredTile.innerHTML = `<p>Restaktivität zum gewünschten Zeitpunkt: ${remainingActivity.toFixed(2)} MBq</p>
-                <p>Verstrichene Halbwertszeiten zum Wunschdatum: ${(elapsedHoursToDesired / halfLife).toFixed(2)}</p>`;
+            desiredTile.innerHTML = `<p>Restaktivität zum gewünschten Zeitpunkt: ${remainingActivity.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} MBq</p>
+                <p>Verstrichene Halbwertszeiten zum Wunschdatum: ${(elapsedHoursToDesired / halfLife).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>`;
         }
 
         const desiredActivity = parseFloat(document.getElementById("desiredActivity").value);
@@ -192,24 +192,23 @@
             const timeToDesired = halfLife * Math.log(initialActivity / desiredActivity) / Math.log(2);
             const dateTimeToDesired = new Date(measurementDate.getTime() + timeToDesired * 60 * 60 * 1000);
             const desiredTile = document.getElementById("desiredTile");
-            desiredTile.innerHTML += `<p>Zeit bis zum gewünschten Aktivitätsniveau: ${timeToDesired.toFixed(2)} Stunden</p>
+            desiredTile.innerHTML += `<p>Zeit bis zum gewünschten Aktivitätsniveau: ${timeToDesired.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Stunden</p>
                 <p>Datum und Uhrzeit bis zum gewünschten Aktivitätsniveau: ${dateTimeToDesired.toLocaleString()}</p>`;
         }
     }
 
     function toggleInputOption() {
-    const selectedOption = document.getElementById("inputOption").value;
-    if (selectedOption === "activity") {
-        document.getElementById("activityInput").style.display = "block";
-        document.getElementById("datetimeInput").style.display = "none";
-        document.getElementById("targetDatetime").value = "";  // Clear previous input
-    } else {
-        document.getElementById("activityInput").style.display = "none";
-        document.getElementById("datetimeInput").style.display = "block";
-        document.getElementById("desiredActivity").value = "";  // Clear previous input
+        const selectedOption = document.getElementById("inputOption").value;
+        if (selectedOption === "activity") {
+            document.getElementById("activityInput").style.display = "block";
+            document.getElementById("datetimeInput").style.display = "none";
+            document.getElementById("targetDatetime").value = "";  // Clear previous input
+        } else {
+            document.getElementById("activityInput").style.display = "none";
+            document.getElementById("datetimeInput").style.display = "block";
+            document.getElementById("desiredActivity").value = "";  // Clear previous input
+        }
     }
-}
-
 
     function resetResults() {
         document.getElementById("currentTile").innerHTML = "";
