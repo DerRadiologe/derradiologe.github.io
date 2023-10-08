@@ -1,4 +1,4 @@
-Restaktivitätsrechner für Radioaktive Isotope
+<h3>Restaktivitätsrechner für Radioaktive Isotope</h3>
 
 Der Restaktivitätsrechner ist ein webbasiertes Tool zur Berechnung der Restaktivität von verschiedenen radioaktiven Isotopen.
 
