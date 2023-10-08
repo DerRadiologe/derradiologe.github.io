@@ -49,6 +49,10 @@
         button:hover {
             background-color: #0056b3;
         }
+        #result, #timeToDesiredActivity, #dateTimeToDesiredActivity, #elapsedHalfLives {
+            font-weight: bold;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
@@ -80,6 +84,7 @@
         <h2>Ergebnis:</h2>
         <p id="result">Restaktivität wird hier angezeigt.</p>
         <p id="timeToDesiredActivity">Zeit bis zum gewünschten Aktivitätsniveau wird hier angezeigt.</p>
+        <p id="dateTimeToDesiredActivity">Datum und Uhrzeit bis zum gewünschten Aktivitätsniveau werden hier angezeigt.</p>
         <p id="elapsedHalfLives">Verstrichene Halbwertszeiten werden hier angezeigt.</p>
 
         <h3>Informationen:</h3>
@@ -91,9 +96,18 @@
 
     <script>
         function calculate() {
+            // Ergebnisse zurücksetzen
+            resetResults();
+            
+            const measurementDateValue = document.getElementById("datetime").value;
+            if (!measurementDateValue) {
+                alert("Bitte geben Sie das Datum und die Uhrzeit der ursprünglichen Messung ein.");
+                return;
+            }
+            const measurementDate = new Date(measurementDateValue);
+            
             const initialActivity = parseFloat(document.getElementById("activity").value);
             
-            // New logic to determine halfLife based on dropdown value
             let halfLifeValue = document.getElementById("isotope").value;
             let halfLife;
             if (halfLifeValue.includes("days")) {
@@ -102,7 +116,6 @@
                 halfLife = parseFloat(halfLifeValue.split("_")[0]);
             }
 
-            const measurementDate = new Date(document.getElementById("datetime").value);
             let targetDate = document.getElementById("targetDatetime").value;
             if (!targetDate) {
                 targetDate = new Date();
@@ -114,17 +127,25 @@
             const remainingActivity = initialActivity * Math.pow(0.5, elapsedHours / halfLife);
             document.getElementById("result").innerText = `Restaktivität: ${remainingActivity.toFixed(2)} MBq`;
 
-    // Calculate time to desired activity level
-    const desiredActivity = parseFloat(document.getElementById("desiredActivity").value);
-    if (desiredActivity && desiredActivity < initialActivity) {
-        const timeToDesired = halfLife * Math.log2(initialActivity / desiredActivity);
-        document.getElementById("timeToDesiredActivity").innerText = `Zeit bis zum gewünschten Aktivitätsniveau: ${timeToDesired.toFixed(2)} Stunden`;
-    }
+            const desiredActivity = parseFloat(document.getElementById("desiredActivity").value);
+            if (desiredActivity && desiredActivity < initialActivity) {
+                const timeToDesired = halfLife * Math.log(initialActivity / desiredActivity) / Math.log(2);
+                document.getElementById("timeToDesiredActivity").innerText = `Zeit bis zum gewünschten Aktivitätsniveau: ${timeToDesired.toFixed(2)} Stunden`;
+                
+                const dateTimeToDesired = new Date(measurementDate.getTime() + timeToDesired * 60 * 60 * 1000); // Convert hours to milliseconds
+                document.getElementById("dateTimeToDesiredActivity").innerText = `Datum und Uhrzeit bis zum gewünschten Aktivitätsniveau: ${dateTimeToDesired.toLocaleString()}`;
+            }
 
-    // Calculate elapsed half-lives
-    const elapsedHalfLives = elapsedHours / halfLife;
-    document.getElementById("elapsedHalfLives").innerText = `Verstrichene Halbwertszeiten: ${elapsedHalfLives.toFixed(2)}`;
-}
+            const elapsedHalfLives = elapsedHours / halfLife;
+            document.getElementById("elapsedHalfLives").innerText = `Verstrichene Halbwertszeiten: ${elapsedHalfLives.toFixed(2)}`;
+        }
+
+        function resetResults() {
+            document.getElementById("result").innerText = "Restaktivität wird hier angezeigt.";
+            document.getElementById("timeToDesiredActivity").innerText = "Zeit bis zum gewünschten Aktivitätsniveau wird hier angezeigt.";
+            document.getElementById("dateTimeToDesiredActivity").innerText = "Datum und Uhrzeit bis zum gewünschten Aktivitätsniveau werden hier angezeigt.";
+            document.getElementById("elapsedHalfLives").innerText = "Verstrichene Halbwertszeiten werden hier angezeigt.";
+        }
     </script>
 </body>
 </html>
