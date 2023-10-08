@@ -181,7 +181,7 @@
         const currentActivity = initialActivity * Math.pow(0.5, currentElapsedHours / halfLife);
         const currentTile = document.getElementById("currentTile");
         currentTile.innerHTML = `<p>Aktuelle Restaktivität: ${formatNumber(currentActivity)} MBq</p>
-            <p>Verstrichene Halbwertszeiten bis zum aktuellen Zeitpunkt: ${formatNumber(currentElapsedHours / halfLife)}</p>`;
+            <p>Aktuell verstrichene Halbwertszeiten: ${formatNumber(currentElapsedHours / halfLife)}</p>`;
 
         const targetDateValue = document.getElementById("targetDatetime").value;
         if (targetDateValue) {
