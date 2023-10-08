@@ -226,7 +226,17 @@
     const measurementDate = new Date(measurementDateValue);
 
     // Setze das Mindestdatum für "targetDatetime" auf das ausgewählte Messdatum
+    document.getElementById("datetime").addEventListener("change", function() {
+    const measurementDateValue = document.getElementById("datetime").value;
+    const measurementDate = new Date(measurementDateValue);
+
+    // Setze die Uhrzeit des measurementDate-Objekts auf Mitternacht
+    measurementDate.setHours(0, 0, 0, 0);
+
+    // Setze das Mindestdatum für "targetDatetime" auf das ausgewählte Messdatum
     document.getElementById("targetDatetime").min = measurementDate.toISOString().slice(0,16);
+});
+
 });
 
 </script>
