@@ -91,33 +91,25 @@
 
     <script>
         function calculate() {
-    const initialActivity = parseFloat(document.getElementById("activity").value);
-    const halfLife = parseFloat(document.getElementById("isotope").value);
-    const measurementDate = new Date(document.getElementById("datetime").value);
-    let targetDate = document.getElementById("targetDatetime").value;
-    if (!targetDate) {
-        targetDate = new Date();
-    } else {
-        targetDate = new Date(targetDate);
-    }
-    const elapsedHours = (targetDate - measurementDate) / 1000 / 60 / 60;  // Convert milliseconds to hours
-    const remainingActivity = initialActivity * Math.pow(0.5, elapsedHours / halfLife);
-    document.getElementById("result").innerText = `Restaktivität: ${remainingActivity.toFixed(2)} MBq`;
+            const initialActivity = parseFloat(document.getElementById("activity").value);
+            const halfLife = parseFloat(document.getElementById("isotope").value);
+            const measurementDate = new Date(document.getElementById("datetime").value);
+            let targetDate = document.getElementById("targetDatetime").value;
+            if (!targetDate) {
+                targetDate = new Date();
+            } else {
+                targetDate = new Date(targetDate);
+            }
+            const elapsedHours = (targetDate - measurementDate) / 1000 / 60 / 60;  // Convert milliseconds to hours
+            const remainingActivity = initialActivity * Math.pow(0.5, elapsedHours / halfLife);
+            document.getElementById("result").innerText = `Restaktivität: ${remainingActivity.toFixed(2)} MBq`;
 
-    // Calculate time to desired activity level
-    const desiredActivity = parseFloat(document.getElementById("desiredActivity").value);
-    if (desiredActivity && desiredActivity < initialActivity) {
-        const timeToDesired = -halfLife * Math.log2(desiredActivity / initialActivity);
-        const desiredDate = new Date(measurementDate.getTime() + timeToDesired * 60 * 60 * 1000); // Convert hours to milliseconds and add to the measurement date
-        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-        document.getElementById("timeToDesiredActivity").innerText = `Datum und Uhrzeit des gewünschten Aktivitätsniveaus: ${desiredDate.toLocaleDateString('de-DE', options)}`;
-    }
-
-    // Calculate elapsed half-lives
-    const elapsedHalfLives = elapsedHours / halfLife;
-    document.getElementById("elapsedHalfLives").innerText = `Verstrichene Halbwertszeiten: ${elapsedHalfLives.toFixed(2)}`;
-}
-
+            // Calculate time to desired activity level
+            const desiredActivity = parseFloat(document.getElementById("desiredActivity").value);
+            if (desiredActivity && desiredActivity < initialActivity) {
+                const timeToDesired = -halfLife * Math.log2(desiredActivity / initialActivity);
+                document.getElementById("timeToDesiredActivity").innerText = `Zeit bis zum gewünschten Aktivitätsniveau: ${timeToDesired.toFixed(2)} Stunden`;
+            }
 
             // Calculate elapsed half-lives
             const elapsedHalfLives = elapsedHours / halfLife;
