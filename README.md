@@ -6,11 +6,14 @@ Der Restaktivitätsrechner ist ein webbasiertes Tool zur Berechnung der Restakti
 
 Benutzerfreundliche Schnittstelle: Dank eines klaren und intuitiven Designs können Nutzer schnell und effizient die Restaktivität berechnen.
 Unterstützung mehrerer Isotope: Aktuell werden Tc-99m, I-131, F-18 und Ge-68 unterstützt.
-Flexibles Datumseingabe-System: Nutzer können die Restaktivität an einem bestimmten Datum oder zu einem bestimmten Aktivitätsniveau berechnen.
-Informationen zu Halbwertszeiten: Für jedes unterstützte Isotop sind Halbwertszeitinformationen direkt auf der Seite verfügbar.
-Responsive Design: Das Tool ist so gestaltet, dass es auf verschiedenen Geräten – vom Desktop bis zum Mobiltelefon – funktioniert.
-Verwendung
 
+Flexibles Datumseingabe-System: Nutzer können die Restaktivität an einem bestimmten Datum oder zu einem bestimmten Aktivitätsniveau berechnen.
+
+Informationen zu Halbwertszeiten: Für jedes unterstützte Isotop sind Halbwertszeitinformationen direkt auf der Seite verfügbar.
+
+Responsive Design: Das Tool ist so gestaltet, dass es auf verschiedenen Geräten – vom Desktop bis zum Mobiltelefon – funktioniert.
+
+<h2>Verwendung</h2>
 Nach dem Laden der Seite können Benutzer:
 
 Die ursprüngliche Aktivität (in MBq) eingeben.
