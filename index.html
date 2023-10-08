@@ -196,7 +196,7 @@
             const timeToDesired = halfLife * Math.log(initialActivity / desiredActivity) / Math.log(2);
             const dateTimeToDesired = new Date(measurementDate.getTime() + timeToDesired * 60 * 60 * 1000);
             const desiredTile = document.getElementById("desiredTile");
-            desiredTile.innerHTML += `<p>Zeit bis zum gewünschten Aktivitätsniveau: ${formatNumber(timeToDesired)} Stunden</p>
+            desiredTile.innerHTML += `<p>Zeit bis zum gewünschten Aktivitätsniveau (ab Messung): ${formatNumber(timeToDesired)} Stunden</p>
                 <p>Datum und Uhrzeit bis zum gewünschten Aktivitätsniveau: ${dateTimeToDesired.toLocaleString()}</p>`;
         }
     }
