@@ -27,6 +27,9 @@
         <label for="datetime">Datum und Uhrzeit der ursprünglichen Messung:</label>
         <input type="datetime-local" id="datetime" name="datetime" required>
 
+        <label for="targetDatetime">Gewünschtes Datum und Uhrzeit für Restaktivität:</label>
+        <input type="datetime-local" id="targetDatetime" name="targetDatetime">
+
         <button onclick="calculate()">Berechnen</button>
 
         <h2>Ergebnis:</h2>
@@ -44,8 +47,13 @@
             const initialActivity = parseFloat(document.getElementById("activity").value);
             const halfLife = parseFloat(document.getElementById("isotope").value);
             const measurementDate = new Date(document.getElementById("datetime").value);
-            const currentDate = new Date();
-            const elapsedHours = (currentDate - measurementDate) / 1000 / 60 / 60;  // Convert milliseconds to hours
+            let targetDate = document.getElementById("targetDatetime").value;
+            if (!targetDate) {
+                targetDate = new Date();
+            } else {
+                targetDate = new Date(targetDate);
+            }
+            const elapsedHours = (targetDate - measurementDate) / 1000 / 60 / 60;  // Convert milliseconds to hours
 
             const remainingActivity = initialActivity * Math.pow(0.5, elapsedHours / halfLife);
             document.getElementById("result").innerText = `Restaktivität: ${remainingActivity.toFixed(2)} MBq`;
