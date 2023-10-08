@@ -91,30 +91,40 @@
 
     <script>
         function calculate() {
-            const initialActivity = parseFloat(document.getElementById("activity").value);
-            const halfLife = parseFloat(document.getElementById("isotope").value);
-            const measurementDate = new Date(document.getElementById("datetime").value);
-            let targetDate = document.getElementById("targetDatetime").value;
-            if (!targetDate) {
-                targetDate = new Date();
-            } else {
-                targetDate = new Date(targetDate);
-            }
-            const elapsedHours = (targetDate - measurementDate) / 1000 / 60 / 60;  // Convert milliseconds to hours
-            const remainingActivity = initialActivity * Math.pow(0.5, elapsedHours / halfLife);
-            document.getElementById("result").innerText = `Restaktivität: ${remainingActivity.toFixed(2)} MBq`;
+    const initialActivity = parseFloat(document.getElementById("activity").value);
+    let halfLife = parseFloat(document.getElementById("isotope").value); // Halbwertszeit in Stunden
+    const isotope = document.getElementById("isotope").selectedOptions[0].innerText;
 
-            // Calculate time to desired activity level
-            const desiredActivity = parseFloat(document.getElementById("desiredActivity").value);
-            if (desiredActivity && desiredActivity < initialActivity) {
-                const timeToDesired = -halfLife * Math.log2(desiredActivity / initialActivity);
-                document.getElementById("timeToDesiredActivity").innerText = `Zeit bis zum gewünschten Aktivitätsniveau: ${timeToDesired.toFixed(2)} Stunden`;
-            }
+    // Halbwertszeiten in der richtigen Einheit umrechnen
+    if (isotope.includes("Tage")) {
+        halfLife *= 24; // Umrechnung in Stunden
+    } else if (isotope.includes("Minuten")) {
+        halfLife /= 60; // Umrechnung in Stunden
+    }
 
-            // Calculate elapsed half-lives
-            const elapsedHalfLives = elapsedHours / halfLife;
-            document.getElementById("elapsedHalfLives").innerText = `Verstrichene Halbwertszeiten: ${elapsedHalfLives.toFixed(2)}`;
-        }
+    const measurementDate = new Date(document.getElementById("datetime").value);
+    let targetDate = document.getElementById("targetDatetime").value;
+    if (!targetDate) {
+        targetDate = new Date();
+    } else {
+        targetDate = new Date(targetDate);
+    }
+
+    const elapsedHours = (targetDate - measurementDate) / 1000 / 60 / 60;  // Convert milliseconds to hours
+    const remainingActivity = initialActivity * Math.pow(0.5, elapsedHours / halfLife);
+    document.getElementById("result").innerText = `Restaktivität: ${remainingActivity.toFixed(2)} MBq`;
+
+    // Calculate time to desired activity level
+    const desiredActivity = parseFloat(document.getElementById("desiredActivity").value);
+    if (desiredActivity && desiredActivity < initialActivity) {
+        const timeToDesired = -halfLife * Math.log2(desiredActivity / initialActivity);
+        document.getElementById("timeToDesiredActivity").innerText = `Zeit bis zum gewünschten Aktivitätsniveau: ${timeToDesired.toFixed(2)} Stunden`;
+    }
+
+    // Calculate elapsed half-lives
+    const elapsedHalfLives = elapsedHours / halfLife;
+    document.getElementById("elapsedHalfLives").innerText = `Verstrichene Halbwertszeiten: ${elapsedHalfLives.toFixed(2)}`;
+}
     </script>
 </body>
 </html>
