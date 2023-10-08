@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Restaktivität</title>
+    <title>Restaktivitätsrechner</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -53,7 +53,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Restaktivität</h1>
+        <h1>Restaktivitätsrechner für Radiologie</h1>
 
         <label for="activity">Ursprüngliche Aktivität (in MBq):</label>
         <input type="number" id="activity" name="activity" required>
@@ -72,16 +72,27 @@
         <label for="targetDatetime">Gewünschtes Datum und Uhrzeit für Restaktivität:</label>
         <input type="datetime-local" id="targetDatetime" name="targetDatetime">
 
+        <label for="desiredActivity">Gewünschtes Aktivitätsniveau (in MBq):</label>
+        <input type="number" id="desiredActivity" name="desiredActivity">
+
         <button onclick="calculate()">Berechnen</button>
 
         <h2>Ergebnis:</h2>
         <p id="result">Restaktivität wird hier angezeigt.</p>
+        <p id="timeToDesiredActivity">Zeit bis zum gewünschten Aktivitätsniveau wird hier angezeigt.</p>
+        <p id="elapsedHalfLives">Verstrichene Halbwertszeiten werden hier angezeigt.</p>
 
         <h3>Informationen:</h3>
         <p>Halbwertszeit von Tc-99m: 6 Stunden</p>
         <p>Halbwertszeit von I-131: 8 Tage</p>
         <p>Halbwertszeit von F-18: 109.8 Minuten</p>
         <p>Halbwertszeit von Ge-68: 271 Tage</p>
+
+        <h3>Sicherheitsinformationen:</h3>
+        <p>Beim Umgang mit radioaktiven Isotopen immer Schutzkleidung tragen. Vermeiden Sie den direkten Kontakt mit den Isotopen und waschen Sie sich nach der Handhabung gründlich die Hände.</p>
+
+        <h3>Lagerungs- und Entsorgungshinweise:</h3>
+        <p>Radioaktive Isotope sollten in einem dafür vorgesehenen, abgeschirmten Behälter gelagert werden. Die Entsorgung sollte gemäß den geltenden Vorschriften und nur von autorisiertem Personal durchgeführt werden.</p>
     </div>
 
     <script>
@@ -96,9 +107,19 @@
                 targetDate = new Date(targetDate);
             }
             const elapsedHours = (targetDate - measurementDate) / 1000 / 60 / 60;  // Convert milliseconds to hours
-
             const remainingActivity = initialActivity * Math.pow(0.5, elapsedHours / halfLife);
             document.getElementById("result").innerText = `Restaktivität: ${remainingActivity.toFixed(2)} MBq`;
+
+            // Calculate time to desired activity level
+            const desiredActivity = parseFloat(document.getElementById("desiredActivity").value);
+            if (desiredActivity && desiredActivity < initialActivity) {
+                const timeToDesired = -halfLife * Math.log2(desiredActivity / initialActivity);
+                document.getElementById("timeToDesiredActivity").innerText = `Zeit bis zum gewünschten Aktivitätsniveau: ${timeToDesired.toFixed(2)} Stunden`;
+            }
+
+            // Calculate elapsed half-lives
+            const elapsedHalfLives = elapsedHours / halfLife;
+            document.getElementById("elapsedHalfLives").innerText = `Verstrichene Halbwertszeiten: ${elapsedHalfLives.toFixed(2)}`;
         }
     </script>
 </body>
