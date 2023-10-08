@@ -110,7 +110,7 @@
 </select>
 
 <div id="datetimeInput" style="display: none;">
-    <label for="targetDatetime">Datum wählen:</label>
+    <label for="targetDatetime">Datum und Uhrzeit:</label>
     <input type="datetime-local" id="targetDatetime" name="targetDatetime">
 </div>
 
@@ -146,86 +146,81 @@
 
     <script>
     function formatNumber(number) {
-    return number.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: false });
-}
-
-function calculate() {
-    // Ergebnisse zurücksetzen
-    resetResults();
-
-    const measurementDateValue = document.getElementById("datetime").value;
-    if (!measurementDateValue) {
-        alert("Bitte geben Sie den Zeitpunkt der Messung ein.");
-        return;
-    }
-    const measurementDate = new Date(measurementDateValue);
-    const now = new Date();
-
-    if (measurementDate > now) {
-        alert("Das Datum der Messung liegt in der Zukunft. Bitte geben Sie ein korrektes Datum ein.");
-        return;
+        return number.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: false });
     }
 
-    const initialActivity = parseFloat(document.getElementById("activity").value);
+    function calculate() {
+        // Ergebnisse zurücksetzen
+        resetResults();
 
-    let halfLifeValue = document.getElementById("isotope").value;
-    let halfLife;
-    if (halfLifeValue.includes("days")) {
-        halfLife = parseFloat(halfLifeValue.split("_")[0]) * 24; // Convert days to hours
-    } else if (halfLifeValue.includes("hours")) {
-        halfLife = parseFloat(halfLifeValue.split("_")[0]);
-    }
-
-    // Calculate current activity
-    const currentElapsedHours = (now - measurementDate) / 1000 / 60 / 60;
-    const currentActivity = initialActivity * Math.pow(0.5, currentElapsedHours / halfLife);
-    const currentTile = document.getElementById("currentTile");
-    currentTile.innerHTML = `<p>Aktuelle Restaktivität: ${formatNumber(currentActivity)} MBq</p>
-        <p>Aktuell verstrichene Halbwertszeiten: ${formatNumber(currentElapsedHours / halfLife)}</p>`;
-
-    const targetDateValue = document.getElementById("targetDatetime").value;
-    if (targetDateValue) {
-        const targetDate = new Date(targetDateValue);
-        if (targetDate < measurementDate) {
-            alert("Das gewählte Zeitpunkt liegt vor dem Messdatum. Bitte geben Sie ein korrektes Datum ein.");
+        const measurementDateValue = document.getElementById("datetime").value;
+        if (!measurementDateValue) {
+            alert("Bitte geben Sie den Zeitpunkt der Messung ein.");
             return;
         }
-        const elapsedHoursToDesired = (targetDate - measurementDate) / 1000 / 60 / 60;
-        const remainingActivity = initialActivity * Math.pow(0.5, elapsedHoursToDesired / halfLife);
+        const measurementDate = new Date(measurementDateValue);
+        const now = new Date();
 
-        const desiredTile = document.getElementById("desiredTile");
-        desiredTile.innerHTML = `<p>Restaktivität zu Datum: ${formatNumber(remainingActivity)} MBq</p>
-            <p>Verstrichene Halbwertszeiten zu Datum: ${formatNumber(elapsedHoursToDesired / halfLife)}</p>`;
+        if (measurementDate > now) {
+            alert("Das Datum der  Messung liegt in der Zukunft. Bitte geben Sie ein korrektes Datum ein.");
+            return;
+        }
+
+        const initialActivity = parseFloat(document.getElementById("activity").value);
+
+        let halfLifeValue = document.getElementById("isotope").value;
+        let halfLife;
+        if (halfLifeValue.includes("days")) {
+            halfLife = parseFloat(halfLifeValue.split("_")[0]) * 24; // Convert days to hours
+        } else if (halfLifeValue.includes("hours")) {
+            halfLife = parseFloat(halfLifeValue.split("_")[0]);
+        }
+
+        // Calculate current activity
+        const currentElapsedHours = (new Date() - measurementDate) / 1000 / 60 / 60;
+        const currentActivity = initialActivity * Math.pow(0.5, currentElapsedHours / halfLife);
+        const currentTile = document.getElementById("currentTile");
+        currentTile.innerHTML = `<p>Aktuelle Restaktivität: ${formatNumber(currentActivity)} MBq</p>
+            <p>Aktuell verstrichene Halbwertszeiten: ${formatNumber(currentElapsedHours / halfLife)}</p>`;
+
+        const targetDateValue = document.getElementById("targetDatetime").value;
+        if (targetDateValue) {
+            const targetDate = new Date(targetDateValue);
+            const elapsedHoursToDesired = (targetDate - measurementDate) / 1000 / 60 / 60;
+            const remainingActivity = initialActivity * Math.pow(0.5, elapsedHoursToDesired / halfLife);
+
+            const desiredTile = document.getElementById("desiredTile");
+            desiredTile.innerHTML = `<p>Restaktivität zu Datum: ${formatNumber(remainingActivity)} MBq</p>
+                <p>Verstrichene Halbwertszeiten zu Datum: ${formatNumber(elapsedHoursToDesired / halfLife)}</p>`;
+        }
+
+        const desiredActivity = parseFloat(document.getElementById("desiredActivity").value);
+        if (desiredActivity && desiredActivity < initialActivity) {
+            const timeToDesired = halfLife * Math.log(initialActivity / desiredActivity) / Math.log(2);
+            const dateTimeToDesired = new Date(measurementDate.getTime() + timeToDesired * 60 * 60 * 1000);
+            const desiredTile = document.getElementById("desiredTile");
+            desiredTile.innerHTML += `<p>Zeit bis zum gewünschten Aktivitätsniveau (ab Messung): ${formatNumber(timeToDesired)} Stunden</p>
+                <p>Datum und Uhrzeit (gewünschtes Aktivitätsniveau): ${dateTimeToDesired.toLocaleString()}</p>`;
+        }
     }
 
-    const desiredActivity = parseFloat(document.getElementById("desiredActivity").value);
-    if (desiredActivity && desiredActivity < initialActivity) {
-        const timeToDesired = halfLife * Math.log(initialActivity / desiredActivity) / Math.log(2);
-        const dateTimeToDesired = new Date(measurementDate.getTime() + timeToDesired * 60 * 60 * 1000);
-        const desiredTile = document.getElementById("desiredTile");
-        desiredTile.innerHTML += `<p>Zeit bis zum gewünschten Aktivitätsniveau (ab Messung): ${formatNumber(timeToDesired)} Stunden</p>
-            <p>Datum und Uhrzeit (gewünschtes Aktivitätsniveau): ${dateTimeToDesired.toLocaleString()}</p>`;
+    function toggleInputOption() {
+        const selectedOption = document.getElementById("inputOption").value;
+        if (selectedOption === "activity") {
+            document.getElementById("activityInput").style.display = "block";
+            document.getElementById("datetimeInput").style.display = "none";
+            document.getElementById("targetDatetime").value = "";  // Clear previous input
+        } else {
+            document.getElementById("activityInput").style.display = "none";
+            document.getElementById("datetimeInput").style.display = "block";
+            document.getElementById("desiredActivity").value = "";  // Clear previous input
+        }
     }
-}
 
-function toggleInputOption() {
-    const selectedOption = document.getElementById("inputOption").value;
-    if (selectedOption === "activity") {
-        document.getElementById("activityInput").style.display = "block";
-        document.getElementById("datetimeInput").style.display = "none";
-        document.getElementById("targetDatetime").value = "";  // Clear previous input
-    } else {
-        document.getElementById("activityInput").style.display = "none";
-        document.getElementById("datetimeInput").style.display = "block";
-        document.getElementById("desiredActivity").value = "";  // Clear previous input
+    function resetResults() {
+        document.getElementById("currentTile").innerHTML = "";
+        document.getElementById("desiredTile").innerHTML = "";
     }
-}
-
-function resetResults() {
-    document.getElementById("currentTile").innerHTML = "";
-    document.getElementById("desiredTile").innerHTML = "";
-}
-
 </script>
 
 </body>
