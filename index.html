@@ -60,10 +60,10 @@
 
         <label for="isotope">Isotop:</label>
         <select id="isotope" name="isotope">
-            <option value="6">Tc-99m - 6 Stunden</option>
-            <option value="192">I-131 - 8 Tage</option>
-            <option value="1.83">F-18 - 109.8 Minuten</option>
-            <option value="271">Ge-68 - 271 Tage</option>
+            <option value="6_hours">Tc-99m - 6 Stunden</option>
+            <option value="192_hours">I-131 - 8 Tage</option>
+            <option value="1.83_hours">F-18 - 109.8 Minuten</option>
+            <option value="271_days">Ge-68 - 271 Tage</option>
         </select>
 
         <label for="datetime">Datum und Uhrzeit der ursprünglichen Messung:</label>
@@ -91,28 +91,28 @@
 
     <script>
         function calculate() {
-    const initialActivity = parseFloat(document.getElementById("activity").value);
-    let halfLife = parseFloat(document.getElementById("isotope").value); // Halbwertszeit in Stunden
-    const isotope = document.getElementById("isotope").selectedOptions[0].innerText;
+            const initialActivity = parseFloat(document.getElementById("activity").value);
+            
+            // New logic to determine halfLife based on dropdown value
+            let halfLifeValue = document.getElementById("isotope").value;
+            let halfLife;
+            if (halfLifeValue.includes("days")) {
+                halfLife = parseFloat(halfLifeValue.split("_")[0]) * 24; // Convert days to hours
+            } else if (halfLifeValue.includes("hours")) {
+                halfLife = parseFloat(halfLifeValue.split("_")[0]);
+            }
 
-    // Halbwertszeiten in der richtigen Einheit umrechnen
-    if (isotope.includes("Tage")) {
-        halfLife *= 24; // Umrechnung in Stunden
-    } else if (isotope.includes("Minuten")) {
-        halfLife /= 60; // Umrechnung in Stunden
-    }
+            const measurementDate = new Date(document.getElementById("datetime").value);
+            let targetDate = document.getElementById("targetDatetime").value;
+            if (!targetDate) {
+                targetDate = new Date();
+            } else {
+                targetDate = new Date(targetDate);
+            }
 
-    const measurementDate = new Date(document.getElementById("datetime").value);
-    let targetDate = document.getElementById("targetDatetime").value;
-    if (!targetDate) {
-        targetDate = new Date();
-    } else {
-        targetDate = new Date(targetDate);
-    }
-
-    const elapsedHours = (targetDate - measurementDate) / 1000 / 60 / 60;  // Convert milliseconds to hours
-    const remainingActivity = initialActivity * Math.pow(0.5, elapsedHours / halfLife);
-    document.getElementById("result").innerText = `Restaktivität: ${remainingActivity.toFixed(2)} MBq`;
+            const elapsedHours = (targetDate - measurementDate) / 1000 / 60 / 60;  // Convert milliseconds to hours
+            const remainingActivity = initialActivity * Math.pow(0.5, elapsedHours / halfLife);
+            document.getElementById("result").innerText = `Restaktivität: ${remainingActivity.toFixed(2)} MBq`;
 
     // Calculate time to desired activity level
     const desiredActivity = parseFloat(document.getElementById("desiredActivity").value);
