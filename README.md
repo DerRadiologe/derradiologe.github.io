@@ -1,8 +1,8 @@
-<h3>Restaktivitätsrechner für Radioaktive Isotope</h3>
+<h2>Restaktivitätsrechner für Radioaktive Isotope</h2>
 
 Der Restaktivitätsrechner ist ein webbasiertes Tool zur Berechnung der Restaktivität von verschiedenen radioaktiven Isotopen.
 
-Hauptmerkmale
+<h2>Hauptmerkmale</h2>
 
 Benutzerfreundliche Schnittstelle: Dank eines klaren und intuitiven Designs können Nutzer schnell und effizient die Restaktivität berechnen.
 Unterstützung mehrerer Isotope: Aktuell werden Tc-99m, I-131, F-18 und Ge-68 unterstützt.
@@ -19,5 +19,5 @@ Das Datum und die Uhrzeit der ursprünglichen Messung eingeben.
 Entweder ein gewünschtes Aktivitätsniveau (in MBq) oder ein Wunschdatum für die Restaktivitätsmessung auswählen.
 Die Ergebnisse anzeigen lassen, die sowohl die aktuelle Restaktivität als auch die Restaktivität zum gewünschten Zeitpunkt oder Niveau beinhalten.
 
-Haftungsausschluss
+<h2>Haftungsausschluss</h2>
 Dieses Tool dient nur zu Informationszwecken. Es wird dringend empfohlen, sich bei Fragen zur Radioaktivität und strahlungsbezogenen Themen an qualifizierte Fachleute zu wenden.
