@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Restaktivitätsrechner</title>
+    <title>Restaktivität</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -89,14 +89,14 @@
      <div class="container">
         <h1>Restaktivität</h1>
 
-        <label for="activity">Ursprüngliche Aktivität (in MBq):</label>
+        <label for="activity">Aktivität gemessen (MBq):</label>
         <input type="number" id="activity" name="activity" required>
 
         <label for="isotope">Isotop:</label>
         <select id="isotope" name="isotope">
             <option value="6_hours">Tc-99m - 6 Stunden</option>
             <option value="192_hours">I-131 - 8 Tage</option>
-            <option value="1.83_hours">F-18 - 109.8 Minuten</option>
+            <option value="1.83_hours">F-18 - 109,8 Minuten</option>
             <option value="271_days">Ge-68 - 271 Tage</option>
         </select>
 
@@ -105,8 +105,8 @@
 
         <label for="inputOption">Bitte wählen Sie eine Eingabeoption:</label>
 <select id="inputOption" onchange="toggleInputOption()">
-    <option value="activity">Gewünschtes Aktivitätsniveau (in MBq)</option>
-    <option value="datetime">Restaktivität an Datum</option>
+    <option value="activity">Gewünschtes Aktivitätsniveau (MBq)</option>
+    <option value="datetime">Restaktivität zu Datum</option>
 </select>
 
 <div id="datetimeInput" style="display: none;">
@@ -115,7 +115,7 @@
 </div>
 
 <div id="activityInput">
-    <label for="desiredActivity">Gewünschtes Aktivitätsniveau (in MBq):</label>
+    <label for="desiredActivity">Gewünschtes Aktivitätsniveau (MBq):</label>
     <input type="number" id="desiredActivity" name="desiredActivity">
 </div>
 
