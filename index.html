@@ -124,11 +124,11 @@
 
         <h2>Ergebnis:</h2>
         <div class="tile current-tile">
-            <div class="tile-title">Aktueller Stand</div>
+            <div class="tile-title">Aktuell</div>
             <div id="currentTile"></div>
         </div>
         <div class="tile desired-tile">
-            <div class="tile-title">Wunschstand</div>
+            <div class="tile-title">Zukünftig</div>
             <div id="desiredTile"></div>
         </div>
 
@@ -155,14 +155,14 @@
 
         const measurementDateValue = document.getElementById("datetime").value;
         if (!measurementDateValue) {
-            alert("Bitte geben Sie das Datum und die Uhrzeit der ursprünglichen Messung ein.");
+            alert("Bitte geben Sie den Zeitpunkt der Messung ein.");
             return;
         }
         const measurementDate = new Date(measurementDateValue);
         const now = new Date();
 
         if (measurementDate > now) {
-            alert("Das Datum der ursprünglichen Messung liegt in der Zukunft. Bitte geben Sie ein korrektes Datum ein.");
+            alert("Das Datum der  Messung liegt in der Zukunft. Bitte geben Sie ein korrektes Datum ein.");
             return;
         }
 
@@ -190,8 +190,8 @@
             const remainingActivity = initialActivity * Math.pow(0.5, elapsedHoursToDesired / halfLife);
 
             const desiredTile = document.getElementById("desiredTile");
-            desiredTile.innerHTML = `<p>Restaktivität zum gewünschten Zeitpunkt: ${formatNumber(remainingActivity)} MBq</p>
-                <p>Verstrichene Halbwertszeiten zum Wunschdatum: ${formatNumber(elapsedHoursToDesired / halfLife)}</p>`;
+            desiredTile.innerHTML = `<p>Restaktivität zu Datum: ${formatNumber(remainingActivity)} MBq</p>
+                <p>Verstrichene Halbwertszeiten : ${formatNumber(elapsedHoursToDesired / halfLife)}</p>`;
         }
 
         const desiredActivity = parseFloat(document.getElementById("desiredActivity").value);
