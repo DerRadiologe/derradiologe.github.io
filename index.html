@@ -221,6 +221,14 @@
         document.getElementById("currentTile").innerHTML = "";
         document.getElementById("desiredTile").innerHTML = "";
     }
+        document.getElementById("datetime").addEventListener("change", function() {
+    const measurementDateValue = document.getElementById("datetime").value;
+    const measurementDate = new Date(measurementDateValue);
+
+    // Setze das Mindestdatum für "targetDatetime" auf das ausgewählte Messdatum
+    document.getElementById("targetDatetime").min = measurementDate.toISOString().slice(0,16);
+});
+
 </script>
 
 </body>
