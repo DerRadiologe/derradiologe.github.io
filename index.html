@@ -91,7 +91,7 @@
         <h1>Restaktivität</h1>
 
         <label for="activity">Aktivität gemessen (MBq):</label>
-        <input type="number" id="activity" name="activity" required>
+        <input type="number" id="activity" name="activity" required min="0">
 
 	<label for="datetime">Datum und Uhrzeit der Messung:</label>
         <input type="datetime-local" id="datetime" name="datetime" required>
@@ -117,7 +117,7 @@
 
 <div id="activityInput">
     <label for="desiredActivity">Gewünschtes Aktivitätsniveau (MBq):</label>
-    <input type="number" id="desiredActivity" name="desiredActivity">
+    <input type="number" id="desiredActivity" name="desiredActivity" min="0">
 </div>
 
 
