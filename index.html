@@ -91,7 +91,10 @@
 
         <label for="activity">Aktivität gemessen (MBq):</label>
         <input type="number" id="activity" name="activity" required>
-        <label for="datetime">Datum und Uhrzeit der Messung:</label>
+
+	<label for="datetime">Datum und Uhrzeit der Messung:</label>
+        <input type="datetime-local" id="datetime" name="datetime" required>
+
         <label for="isotope">Isotop:</label>
         <select id="isotope" name="isotope">
             <option value="6_hours">Tc-99m - 6 Stunden</option>
@@ -99,8 +102,6 @@
             <option value="1.83_hours">F-18 - 109,8 Minuten</option>
             <option value="271_days">Ge-68 - 271 Tage</option>
         </select>
-
-        <input type="datetime-local" id="datetime" name="datetime" required>
 
         <label for="inputOption">Bitte wählen Sie eine Eingabeoption:</label>
 <select id="inputOption" onchange="toggleInputOption()">
@@ -170,16 +171,6 @@ function calculate() {
         alert("Das Datum der Messung liegt in der Zukunft. Bitte geben Sie ein korrektes Datum ein.");
         return;
     }
-    
-    const targetDateValue = document.getElementById("targetDatetime").value;
-    if (targetDateValue) {
-        const targetDate = new Date(targetDateValue);
-        if (targetDate <= measurementDate) {
-            alert("Das Datum für die Restaktivität darf nicht vor dem Messdatum liegen. Bitte geben Sie ein gültiges Datum ein.");
-            return;
-        }
-    }
-
     const initialActivity = parseFloat(document.getElementById("activity").value);
     let halfLifeValue = document.getElementById("isotope").value;
     let halfLife;
@@ -193,14 +184,15 @@ function calculate() {
     const currentTile = document.getElementById("currentTile");
     currentTile.innerHTML = `<p>Aktuelle Restaktivität: ${formatNumber(currentActivity)} MBq</p>
         <p>Aktuell verstrichene Halbwertszeiten: ${formatNumber(currentElapsedHours / halfLife)}</p>`;
+    const targetDateValue = document.getElementById("targetDatetime").value;
     if (targetDateValue) {
+        const targetDate = new Date(targetDateValue);
         const elapsedHoursToDesired = (targetDate - measurementDate) / 1000 / 60 / 60;
         const remainingActivity = initialActivity * Math.pow(0.5, elapsedHoursToDesired / halfLife);
         const desiredTile = document.getElementById("desiredTile");
         desiredTile.innerHTML = `<p>Restaktivität zu Datum: ${formatNumber(remainingActivity)} MBq</p>
             <p>Verstrichene Halbwertszeiten zu Datum: ${formatNumber(elapsedHoursToDesired / halfLife)}</p>`;
     }
-
     const desiredActivity = parseFloat(document.getElementById("desiredActivity").value);
     if (desiredActivity && desiredActivity < initialActivity) {
         const timeToDesired = halfLife * Math.log(initialActivity / desiredActivity) / Math.log(2);
@@ -228,7 +220,6 @@ function resetResults() {
     document.getElementById("currentTile").innerHTML = "";
     document.getElementById("desiredTile").innerHTML = "";
 }
-
 
 </script>
 
