@@ -49,7 +49,7 @@
         button:hover {
             background-color: #0056b3;
         }
-        #result, #timeToDesiredActivity, #dateTimeToDesiredActivity, #elapsedHalfLives {
+        #currentActivity, #result, #timeToDesiredActivity, #dateTimeToDesiredActivity, #elapsedHalfLives, #desiredElapsedHalfLives {
             font-weight: bold;
             font-size: 18px;
         }
@@ -82,10 +82,12 @@
         <button onclick="calculate()">Berechnen</button>
 
         <h2>Ergebnis:</h2>
-        <p id="result">Restaktivität wird hier angezeigt.</p>
-        <p id="timeToDesiredActivity">Zeit bis zum gewünschten Aktivitätsniveau wird hier angezeigt.</p>
-        <p id="dateTimeToDesiredActivity">Datum und Uhrzeit bis zum gewünschten Aktivitätsniveau werden hier angezeigt.</p>
-        <p id="elapsedHalfLives">Verstrichene Halbwertszeiten werden hier angezeigt.</p>
+        <p id="currentActivity"></p>
+        <p id="result"></p>
+        <p id="timeToDesiredActivity"></p>
+        <p id="dateTimeToDesiredActivity"></p>
+        <p id="elapsedHalfLives"></p>
+        <p id="desiredElapsedHalfLives"></p>
 
         <h3>Informationen:</h3>
         <p>Halbwertszeit von Tc-99m: 6 Stunden</p>
@@ -116,16 +118,26 @@
                 halfLife = parseFloat(halfLifeValue.split("_")[0]);
             }
 
-            let targetDate = document.getElementById("targetDatetime").value;
-            if (!targetDate) {
-                targetDate = new Date();
-            } else {
-                targetDate = new Date(targetDate);
-            }
+            // Calculate current activity
+            const currentElapsedHours = (new Date() - measurementDate) / 1000 / 60 / 60;
+            const currentActivity = initialActivity * Math.pow(0.5, currentElapsedHours / halfLife);
+            document.getElementById("currentActivity").innerText = `Aktuelle Restaktivität: ${currentActivity.toFixed(2)} MBq`;
 
-            const elapsedHours = (targetDate - measurementDate) / 1000 / 60 / 60;  // Convert milliseconds to hours
-            const remainingActivity = initialActivity * Math.pow(0.5, elapsedHours / halfLife);
-            document.getElementById("result").innerText = `Restaktivität: ${remainingActivity.toFixed(2)} MBq`;
+            // Verstrichene Halbwertszeiten bis zum aktuellen Zeitpunkt
+            const elapsedHalfLives = currentElapsedHours / halfLife;
+            document.getElementById("elapsedHalfLives").innerText = `Verstrichene Halbwertszeiten bis zum aktuellen Zeitpunkt: ${elapsedHalfLives.toFixed(2)}`;
+            
+            let targetDate = document.getElementById("targetDatetime").value;
+            if (targetDate) {
+                targetDate = new Date(targetDate);
+                const elapsedHoursToDesired = (targetDate - measurementDate) / 1000 / 60 / 60;  // Convert milliseconds to hours
+                const remainingActivity = initialActivity * Math.pow(0.5, elapsedHoursToDesired / halfLife);
+                document.getElementById("result").innerText = `Restaktivität zum gewünschten Zeitpunkt: ${remainingActivity.toFixed(2)} MBq`;
+                
+                // Verstrichene Halbwertszeiten zum Wunschdatum
+                const desiredElapsedHalfLives = elapsedHoursToDesired / halfLife;
+                document.getElementById("desiredElapsedHalfLives").innerText = `Verstrichene Halbwertszeiten zum Wunschdatum: ${desiredElapsedHalfLives.toFixed(2)}`;
+            }
 
             const desiredActivity = parseFloat(document.getElementById("desiredActivity").value);
             if (desiredActivity && desiredActivity < initialActivity) {
@@ -135,16 +147,15 @@
                 const dateTimeToDesired = new Date(measurementDate.getTime() + timeToDesired * 60 * 60 * 1000); // Convert hours to milliseconds
                 document.getElementById("dateTimeToDesiredActivity").innerText = `Datum und Uhrzeit bis zum gewünschten Aktivitätsniveau: ${dateTimeToDesired.toLocaleString()}`;
             }
-
-            const elapsedHalfLives = elapsedHours / halfLife;
-            document.getElementById("elapsedHalfLives").innerText = `Verstrichene Halbwertszeiten: ${elapsedHalfLives.toFixed(2)}`;
         }
 
         function resetResults() {
-            document.getElementById("result").innerText = "Restaktivität wird hier angezeigt.";
-            document.getElementById("timeToDesiredActivity").innerText = "Zeit bis zum gewünschten Aktivitätsniveau wird hier angezeigt.";
-            document.getElementById("dateTimeToDesiredActivity").innerText = "Datum und Uhrzeit bis zum gewünschten Aktivitätsniveau werden hier angezeigt.";
-            document.getElementById("elapsedHalfLives").innerText = "Verstrichene Halbwertszeiten werden hier angezeigt.";
+            document.getElementById("currentActivity").innerText = "";
+            document.getElementById("result").innerText = "";
+            document.getElementById("timeToDesiredActivity").innerText = "";
+            document.getElementById("dateTimeToDesiredActivity").innerText = "";
+            document.getElementById("elapsedHalfLives").innerText = "";
+            document.getElementById("desiredElapsedHalfLives").innerText = "";
         }
     </script>
 </body>
