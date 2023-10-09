@@ -91,7 +91,7 @@
         <h1>Restaktivität</h1>
 
         <label for="activity">Aktivität gemessen (MBq):</label>
-        <input type="number" id="activity" name="activity" required min="0" step="any">
+        <input type="text" id="activity" name="activity" required>
 
 	<label for="datetime">Datum und Uhrzeit der Messung:</label>
         <input type="datetime-local" id="datetime" name="datetime" required>
@@ -146,7 +146,7 @@
     </div>
 
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() {
     // Der EventListener für das Ausgrauen des Kalenders wurde entfernt.
 });
 
@@ -184,7 +184,7 @@ function calculate() {
         }
     }
 
-    const initialActivity = parseFloat(document.getElementById("activity").value);
+    const initialActivity = parseFloat(document.getElementById("activity").value.replace(",", "."));
     if (isNaN(initialActivity)) {
         alert("Bitte geben Sie die Anfangsaktivität ein.");
         return;
@@ -212,7 +212,7 @@ function calculate() {
         desiredTile.innerHTML = `<p>Restaktivität zu Datum: ${formatNumber(remainingActivity)} MBq</p>
             <p>Verstrichene Halbwertszeiten zu Datum: ${formatNumber(elapsedHoursToDesired / halfLife)}</p>`;
     }
-    
+
     const desiredActivity = parseFloat(document.getElementById("desiredActivity").value);
     if (!isNaN(desiredActivity) && desiredActivity < initialActivity) {
         const timeToDesired = halfLife * Math.log(initialActivity / desiredActivity) / Math.log(2);
@@ -242,25 +242,7 @@ function resetResults() {
 }
 
 document.getElementById("activity").addEventListener("input", function() {
-    let value = parseFloat(this.value);
-    if (isNaN(value) || value < 0) {
-        this.value = "";
-        alert("Bitte geben Sie nur positive Zahlen ein.");
-    }
-});
-
-// Event-Listener hinzufügen, um die Ergebnisse zurückzusetzen, wenn sich ein Eingabewert ändert
-document.getElementById("activity").addEventListener("input", resetResults);
-document.getElementById("datetime").addEventListener("input", resetResults);
-document.getElementById("isotope").addEventListener("change", resetResults);
-document.getElementById("targetDatetime").addEventListener("input", resetResults);
-document.getElementById("desiredActivity").addEventListener("input", resetResults);
-document.getElementById("inputOption").addEventListener("change", resetResults);
-
-
-// Event-Listener für das Eingabefeld "Aktivität gemessen"
-document.getElementById("activity").addEventListener("input", function() {
-    let measuredValue = parseFloat(this.value);
+    let measuredValue = parseFloat(this.value.replace(",", "."));
     if (!isNaN(measuredValue)) {
         // Den max-Wert des Eingabefelds "Gewünschtes Aktivitätsniveau (MBq)" aktualisieren
         document.getElementById("desiredActivity").max = measuredValue;
@@ -271,15 +253,35 @@ document.getElementById("activity").addEventListener("input", function() {
     resetResults();
 });
 
-// Event-Listener für das Eingabefeld "Gewünschtes Aktivitätsniveau (MBq)"
-document.getElementById("desiredActivity").addEventListener("input", function() {
-    let desiredValue = parseFloat(this.value);
-    let maxValue = parseFloat(this.max);
-    if (desiredValue > maxValue) {
-        this.value = ""; // Den Wert löschen
-        alert("Das gewünschte Aktivitätsniveau darf nicht über der gemessenen Aktivität liegen.");
+document.getElementById("activity").addEventListener("blur", function() {
+    // Überprüfen, ob der eingegebene Wert dem Muster entspricht
+    let pattern = /^\d+([,]\d+)?$/;
+    if (!pattern.test(this.value) && this.value !== "") {
+        alert("Ungültige Eingabe. Bitte korrigieren Sie Ihre Eingabe.");
+        this.value = ""; // Den Wert löschen, wenn er nicht gültig ist
     }
 });
+
+document.getElementById("datetime").addEventListener("change", function() {
+    const measurementDateValue = this.value;
+    const measurementDate = new Date(measurementDateValue);
+    const now = new Date();
+
+    if (measurementDate > now) {
+        alert("Das Datum der Messung liegt in der Zukunft. Bitte geben Sie ein korrektes Datum ein.");
+        this.value = "";  // Setzen Sie den Wert des Eingabefelds zurück
+        this.blur();  // Entfernen Sie den Fokus vom Eingabefeld
+    }
+});
+
+// Event-Listener hinzufügen, um die Ergebnisse zurückzusetzen, wenn sich ein Eingabewert ändert
+document.getElementById("datetime").addEventListener("input", resetResults);
+document.getElementById("isotope").addEventListener("change", resetResults);
+document.getElementById("targetDatetime").addEventListener("input", resetResults);
+document.getElementById("desiredActivity").addEventListener("input", resetResults);
+document.getElementById("inputOption").addEventListener("change", resetResults);
+
+
 
 
 </script>
