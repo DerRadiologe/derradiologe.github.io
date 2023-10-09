@@ -91,7 +91,7 @@
         <h1>Restaktivität</h1>
 
         <label for="activity">Aktivität gemessen (MBq):</label>
-        <input type="number" id="activity" name="activity" required min="0">
+        <input type="number" id="activity" name="activity" required min="0" step="any">
 
 	<label for="datetime">Datum und Uhrzeit der Messung:</label>
         <input type="datetime-local" id="datetime" name="datetime" required>
@@ -117,7 +117,7 @@
 
 <div id="activityInput">
     <label for="desiredActivity">Gewünschtes Aktivitätsniveau (MBq):</label>
-    <input type="number" id="desiredActivity" name="desiredActivity" min="0">
+    <input type="number" id="desiredActivity" name="desiredActivity" min="0" step="any">
 </div>
 
 
@@ -241,6 +241,45 @@ function resetResults() {
     document.getElementById("desiredTile").innerHTML = "";
 }
 
+document.getElementById("activity").addEventListener("input", function() {
+    let value = parseFloat(this.value);
+    if (isNaN(value) || value < 0) {
+        this.value = "";
+        alert("Bitte geben Sie nur positive Zahlen ein.");
+    }
+});
+
+// Event-Listener hinzufügen, um die Ergebnisse zurückzusetzen, wenn sich ein Eingabewert ändert
+document.getElementById("activity").addEventListener("input", resetResults);
+document.getElementById("datetime").addEventListener("input", resetResults);
+document.getElementById("isotope").addEventListener("change", resetResults);
+document.getElementById("targetDatetime").addEventListener("input", resetResults);
+document.getElementById("desiredActivity").addEventListener("input", resetResults);
+document.getElementById("inputOption").addEventListener("change", resetResults);
+
+
+// Event-Listener für das Eingabefeld "Aktivität gemessen"
+document.getElementById("activity").addEventListener("input", function() {
+    let measuredValue = parseFloat(this.value);
+    if (!isNaN(measuredValue)) {
+        // Den max-Wert des Eingabefelds "Gewünschtes Aktivitätsniveau (MBq)" aktualisieren
+        document.getElementById("desiredActivity").max = measuredValue;
+    } else {
+        // Den max-Wert entfernen, wenn die Eingabe nicht gültig ist
+        document.getElementById("desiredActivity").removeAttribute("max");
+    }
+    resetResults();
+});
+
+// Event-Listener für das Eingabefeld "Gewünschtes Aktivitätsniveau (MBq)"
+document.getElementById("desiredActivity").addEventListener("input", function() {
+    let desiredValue = parseFloat(this.value);
+    let maxValue = parseFloat(this.max);
+    if (desiredValue > maxValue) {
+        this.value = ""; // Den Wert löschen
+        alert("Das gewünschte Aktivitätsniveau darf nicht über der gemessenen Aktivität liegen.");
+    }
+});
 
 
 </script>
